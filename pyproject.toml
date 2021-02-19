@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "lntool"
+version = "0.1.0"
+description = ""
+authors = ["Christian Decker <decker.christian@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+click = "^7.1.2"
+requests = "^2.25.1"
+pyln-proto = "^0.9.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
