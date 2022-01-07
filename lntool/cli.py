@@ -1,7 +1,9 @@
+from binascii import unhexlify
+import time
 import json
 import logging
 from collections import namedtuple
-
+import urllib.request
 import click
 import requests
 from pyln.proto.primitives import ShortChannelId
@@ -228,6 +230,38 @@ def analyze(short_channel_id):
     )
 
 
+
+
+@cli.command()
+@click.argument("hexstring", type=str)
+def decode_features(hexstring):
+    features = {
+        0: "option_data_loss_protect",
+        2: "initial_routing_sync",
+        4: "option_upfront_shutdown_script",
+        6: "gossip_queries",
+        8: "var_onion_optin",
+        10: "gossip_queries_ex",
+        12: "option_static_remotekey",
+        14: "payment_secret",
+        16: "basic_mpp",
+        18: "option_support_large_channel",
+        20: "option_anchor_outputs",
+        22: "option_anchors_zero_fee_htlc_tx",
+        26: "option_shutdown_anysegwit",
+        44: "option_channel_type",
+        48: "option_payment_metadata",
+    }
+
+    s = int(hexstring, 16)
+    pos = 0
+    while s != 0:
+        if s & 0x01 != 0x00:
+            name = features.get(pos - (pos % 2), "unknown")
+            mandatory = "mandatory" if pos % 2 == 0 else "optional"
+            print(f"{pos} => {name} ({mandatory})")
+        s = s >> 1
+        pos += 1
 
 
 if __name__ == "__main__":
